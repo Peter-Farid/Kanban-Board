@@ -38,6 +38,21 @@ export class SignInComponent {
         await this._authService.saveUserData();
         this._router.navigate(['/board']);
       }
+
+      // this._authService.signIn(registerForm.value).subscribe({
+      //   next: (res) => {
+      //     if (res.status == 1 && res.statusCode == 200) {
+      //       this.isLoading = false;
+      //       localStorage.setItem("userToken", res.token);
+      //       this._authService.saveUserData();
+      //       this._router.navigate(['/home']);
+      //     }
+      //   },
+      //   error: (err) => {
+      //     this.errorMessage = err.error.message;
+      //     this.isLoading = false;
+      //   }
+      // })
     }
   }
 

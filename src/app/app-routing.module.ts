@@ -6,7 +6,6 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { BoardComponent } from './board/board.component';
 import { AuthGuard } from './auth.guard';
 import { ProfileComponent } from './profile/profile.component';
-import { TaskDetailsComponent } from './task-details/task-details.component';
 
 
 const routes: Routes = [
@@ -14,7 +13,6 @@ const routes: Routes = [
   {path:'signIn',component:SignInComponent,title:"Sign In"},
   {path:'signUp',component:SignUpComponent,title:"Sign Up"},
   {path:'board',component:BoardComponent, canActivate: [AuthGuard] ,title:"Kanban Board"},
-  {path:'task/:id',component:TaskDetailsComponent, canActivate: [AuthGuard] ,title:"Task Details"},
   {path:'profile',component:ProfileComponent, canActivate: [AuthGuard] ,title:"Profile"},
   {path:'**', component:NotFoundComponent, title:"Page Not Found !"}
 ];

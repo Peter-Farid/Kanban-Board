@@ -1,132 +1,166 @@
-<div class="kanbanBoard">
-  <div class="container mt-5">
-    <div class="text-end">
-      <button class="btn btn-primary" (click)="openModal(template)">Add Task</button>
+<div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
+  <div class="bg-light p-1 rounded "
+  cdkDropList
+  #potentialList="cdkDropList"
+  [cdkDropListData]="potential_value"
+  [cdkDropListConnectedTo]="[focusList,contactList,offerList,gettingList]"
+  (cdkDropListDropped)="drop($event)">
+    <h3 class="fw-bolder px-2">Potential Value</h3>
+    <div class="mb-2 px-2">
+      <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{potential_value.length}}</span>
+      <span class="text-muted fw-bold px-4"
+      mat-raised-span
+      matTooltipPosition="above"
+      matTooltip="Total Potential Value    2332 123 NOK {{potential_value.length}} Deals"
+      [matTooltipClass]="'tooltip'"><i class="fa-solid fa-rug"></i> 2.36 mln</span>
+      <span class="text-muted fw-bold"><i class="fa-solid fa-bell"></i> 2</span>
     </div>
-    <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
-      <div class="bg-light p-1 rounded " cdkDropList #toDo="cdkDropList" [cdkDropListData]="to_do"
-        [cdkDropListConnectedTo]="[inProgress,Done]" (cdkDropListDropped)="drop($event)">
-        <h5 class="fw-bolder px-2">To Do</h5>
-        <div class="mb-2 px-2">
-          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{to_do.length}}</span>
+    <div *ngFor="let item of potential_value| search:term" (mousedown)="showDeleteCard()"  cdkDrag class="card text-bg-white mb-3 shadow-sm border-0" style="max-width: 14.5rem;">
+      <div class="card-body p-2">
+        <h5 class="card-title d-flex justify-content-between">{{item.company}} <span class="text-muted fs-5"><i class="fa-solid fa-ellipsis"></i></span></h5>
+        <div class="badges">
+          <h6 class="badge bg-secondary me-2">{{item.state}}</h6>
+          <h6 class="badge bg-primary"
+          mat-raised-span
+          matTooltipPosition="above"
+          matTooltip="Probability Status {{item.probability_status}}">
+          {{item.probability_status}}</h6>
         </div>
-        <div *ngFor="let item of to_do" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
-          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
-          <div class="card-body p-2">
-            <div class="cardHeader d-flex justify-content-between">
-              <h3 class="card-title">{{item.title}}</h3>
-              <div class="actionBtn dropdown">
-                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
-                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i
-                        class="fa-solid fa-trash-can"></i></a></li>
-                </ul>
-              </div>
-            </div>
-            <div>
-              <p class="lead text-muted fs-6">{{item.desc}}</p>
-            </div>
-            <div class="badges">
-              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
-            </div>
-          </div>
-        </div>
+        <div class="contactInfo text-muted d-flex justify-content-between"><span><i class="fa-solid fa-phone"></i> {{item.first_name + ' ' + item.last_name}}</span>{{item.phone.split(" ")[0]}} <span></span></div>
+        <div *ngIf="isFutureDate(item.date)" class="date text-muted"><span><i class="fa-regular fa-calendar"></i> {{item.date}}</span></div>
+        <div *ngIf="!isFutureDate(item.date)" class="date text-danger"><span><i class="fa-regular fa-calendar"></i> {{item.date}} (Past due)</span></div>
       </div>
-      <div class="bg-light p-1 rounded" cdkDropList #inProgress="cdkDropList" [cdkDropListData]="in_progress"
-        [cdkDropListConnectedTo]="[toDo,Done]" (cdkDropListDropped)="drop($event)">
-        <h5 class="fw-bolder px-2">In Progress</h5>
-        <div class="mb-2 px-2">
-          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{in_progress.length}}</span>
+    </div>
+  </div>
+  <div class="bg-light p-1 rounded"
+      cdkDropList
+      #focusList="cdkDropList"
+      [cdkDropListData]="focus"
+      [cdkDropListConnectedTo]="[potentialList,contactList,offerList,gettingList]"
+      (cdkDropListDropped)="drop($event)">
+    <h3 class="fw-bolder px-2">Focus</h3>
+    <div class="mb-2 px-2">
+      <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{focus.length}}</span>
+      <span class="text-muted fw-bold px-4"
+      mat-raised-span
+      matTooltipPosition="above"
+      matTooltip="Total Focus    2332 123 NOK {{focus.length}} Deals"
+      [matTooltipClass]="'tooltip'"><i class="fa-solid fa-rug"></i> 2.36 mln</span>
+      <span class="text-muted fw-bold"><i class="fa-solid fa-bell"></i> 2</span>
+    </div>
+    <div *ngFor="let item of focus|search:term" (mousedown)="showDeleteCard()" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0" style="max-width: 14.5rem;">
+      <div class="card-body p-2">
+        <h5 class="card-title d-flex justify-content-between">{{item.company}} <span class="text-muted fs-5"><i class="fa-solid fa-ellipsis"></i></span></h5>
+        <div class="badges">
+          <h6 class="badge bg-secondary me-2">{{item.state}}</h6>
+          <h6 class="badge bg-primary"
+          mat-raised-span
+          matTooltipPosition="above"
+          matTooltip="Probability Status {{item.probability_status}}">
+          {{item.probability_status}}</h6>
         </div>
-        <div *ngFor="let item of in_progress" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
-          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
-          <div class="card-body p-2">
-            <div class="cardHeader d-flex justify-content-between">
-              <h3 class="card-title">{{item.title}}</h3>
-              <div class="actionBtn dropdown">
-                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
-                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i
-                        class="fa-solid fa-trash-can"></i></a></li>
-                </ul>
-              </div>
-            </div>
-            <div>
-              <p class="lead text-muted fs-6">{{item.desc}}</p>
-            </div>
-            <div class="badges">
-              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
-            </div>
-          </div>
-        </div>
+        <div class="contactInfo text-muted d-flex justify-content-between"><span><i class="fa-solid fa-phone"></i> {{item.first_name + ' ' + item.last_name}}</span>{{item.phone.split(" ")[0]}}<span></span></div>
+        <div *ngIf="isFutureDate(item.date)" class="date text-muted"><span><i class="fa-regular fa-calendar"></i> {{item.date}}</span></div>
+        <div *ngIf="!isFutureDate(item.date)" class="date text-danger"><span><i class="fa-regular fa-calendar"></i> {{item.date}} (Past due)</span></div>
       </div>
-      <div class="bg-light p-1 rounded" cdkDropList #Done="cdkDropList" [cdkDropListData]="done"
-        [cdkDropListConnectedTo]="[toDo,inProgress]" (cdkDropListDropped)="drop($event)">
-        <h5 class="fw-bolder px-2">Done</h5>
-        <div class="mb-2 px-2">
-          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{done.length}}</span>
+    </div>
+  </div>
+  <div class="bg-light p-1 rounded"
+  cdkDropList
+  #contactList="cdkDropList"
+  [cdkDropListData]="contact_made"
+  [cdkDropListConnectedTo]="[potentialList,focusList,offerList,gettingList]"
+  (cdkDropListDropped)="drop($event)">
+    <h3 class="fw-bolder px-2">Contact Made</h3>
+    <div class="mb-2 px-2">
+      <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{contact_made.length}}</span>
+      <span class="text-muted fw-bold px-4"
+      mat-raised-span
+      matTooltipPosition="above"
+      matTooltip="Total Contact Made    2332 123 NOK {{contact_made.length}} Deals"
+      [matTooltipClass]="'tooltip'"><i class="fa-solid fa-rug"></i> 2.36 mln</span>
+      <span class="text-muted fw-bold"><i class="fa-solid fa-bell"></i> 2</span>
+    </div>
+    <div *ngFor="let item of contact_made|search:term" (mousedown)="showDeleteCard()" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0" style="max-width: 14.5rem;">
+      <div class="card-body p-2">
+        <h5 class="card-title d-flex justify-content-between">{{item.company}} <span class="text-muted fs-5"><i class="fa-solid fa-ellipsis"></i></span></h5>
+        <div class="badges">
+          <h6 class="badge bg-secondary me-2">{{item.state}}</h6>
+          <h6 class="badge bg-primary"
+          mat-raised-span
+          matTooltipPosition="above"
+          matTooltip="Probability Status {{item.probability_status}}">
+          {{item.probability_status}}</h6>
         </div>
-        <div *ngFor="let item of done" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
-          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
-          <div class="card-body p-2">
-            <div class="cardHeader d-flex justify-content-between">
-              <h3 class="card-title">{{item.title}}</h3>
-              <div class="actionBtn dropdown">
-                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false"></i>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
-                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i class="fa-solid fa-trash-can"></i></a></li>
-                </ul>
-              </div>
-            </div>
-            <div>
-              <p class="lead text-muted fs-6">{{item.desc}}</p>
-            </div>
-            <div class="badges">
-              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
-            </div>
-          </div>
+        <div class="contactInfo text-muted d-flex justify-content-between"><span><i class="fa-solid fa-phone"></i> {{item.first_name + ' ' + item.last_name}}</span>{{item.phone.split(" ")[0]}}<span></span></div>
+        <div *ngIf="isFutureDate(item.date)" class="date text-muted"><span><i class="fa-regular fa-calendar"></i> {{item.date}}</span></div>
+        <div *ngIf="!isFutureDate(item.date)" class="date text-danger"><span><i class="fa-regular fa-calendar"></i> {{item.date}} (Past due)</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-light p-1 rounded"
+  cdkDropList
+  #offerList="cdkDropList"
+  [cdkDropListData]="offer_sent"
+  [cdkDropListConnectedTo]="[potentialList,focusList,contactList,gettingList]"
+  (cdkDropListDropped)="drop($event)">
+    <h3 class="fw-bolder px-2">Offer Sent</h3>
+    <div class="mb-2 px-2">
+      <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{offer_sent.length}}</span>
+      <span class="text-muted fw-bold px-4"
+      mat-raised-span
+      matTooltipPosition="above"
+      matTooltip="Total Offer Sent    2332 123 NOK {{offer_sent.length}} Deals"
+      [matTooltipClass]="'tooltip'"><i class="fa-solid fa-rug"></i> 2.36 mln</span>
+      <span class="text-muted fw-bold"><i class="fa-solid fa-bell"></i> 2</span>
+    </div>
+    <div *ngFor="let item of offer_sent|search:term" (mousedown)="showDeleteCard()" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0" style="max-width: 14.5rem;">
+      <div class="card-body p-2">
+        <h5 class="card-title d-flex justify-content-between">{{item.company}} <span class="text-muted fs-5"><i class="fa-solid fa-ellipsis"></i></span></h5>
+        <div class="badges">
+          <h6 class="badge bg-secondary me-2">{{item.state}}</h6>
+          <h6 class="badge bg-primary"
+          mat-raised-span
+          matTooltipPosition="above"
+          matTooltip="Probability Status {{item.probability_status}}">
+          {{item.probability_status}}</h6>
+        </div>
+        <div class="contactInfo text-muted d-flex justify-content-between"><span><i class="fa-solid fa-phone"></i> {{item.first_name + ' ' + item.last_name}}</span>0{{item.phone | slice:0:15}} <span></span></div>
+        <div *ngIf="isFutureDate(item.date)" class="date text-muted"><span><i class="fa-regular fa-calendar"></i> {{item.date}}</span></div>
+        <div *ngIf="!isFutureDate(item.date)" class="date text-danger"><span><i class="fa-regular fa-calendar"></i> {{item.date}} (Past due)</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-light p-1 rounded"
+  cdkDropList
+  #gettingList="cdkDropList"
+  [cdkDropListData]="getting_ready"
+  [cdkDropListConnectedTo]="[potentialList,focusList,contactList,offerList]"
+  (cdkDropListDropped)="drop($event)">
+    <h3 class="fw-bolder px-2">Getting Ready</h3>
+    <div class="mb-2 px-2">
+      <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{getting_ready.length}}</span>
+      <span class="text-muted fw-bold px-4"
+      mat-raised-span
+      matTooltipPosition="above"
+      matTooltip="Total Getting Ready    2332 123 NOK {{getting_ready.length}} Deals"
+      [matTooltipClass]="'tooltip'"><i class="fa-solid fa-rug"></i> 2.36 mln</span>
+      <span class="text-muted fw-bold"><i class="fa-solid fa-bell"></i> 2</span>
+    </div>
+    <div *ngFor="let item of getting_ready|search:term" (mousedown)="showDeleteCard()" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0" style="max-width: 14.5rem;">
+      <div class="card-body p-2">
+        <h5 class="card-title d-flex justify-content-between">{{item.company}} <span class="text-muted fs-5"><i class="fa-solid fa-ellipsis"></i></span></h5>
+        <div class="badges"><h6 class="badge bg-secondary me-2">{{item.state}}</h6></div>
+        <div class="contactInfo text-muted d-flex justify-content-between"><span><i class="fa-solid fa-phone"></i> {{item.first_name + ' ' + item.last_name}}</span>{{item.phone.split(" ")[0]}}<span></span></div>
+        <div *ngIf="isFutureDate(item.date)" class="date text-muted"><span><i class="fa-regular fa-calendar"></i> {{item.date}}</span></div>
+        <div *ngIf="!isFutureDate(item.date)" class="date text-danger"><span><i class="fa-regular fa-calendar"></i> {{item.date}} (Past due)</span></div>
+        <div class="progress d-flex align-items-center bg-transparent" role="progressbar" style="height: 10px; border: 1px solid #38b100;"aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+          mat-raised-span
+          matTooltipPosition="above"
+          matTooltip="Probability Status {{item.probability_status}}">
+          <div class="progress-bar" style="height: 5px; background-color: #38b100;" [style.width]="item.probability_status"></div>
         </div>
       </div>
     </div>
   </div>
-  <ng-template class="modal fade" id="staticBackdrop" #template data-backdrop="static" data-keyboard="false"
-  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-header justify-content-center">
-    <h4 class="text-center py-2">Add Task</h4>
-  </div>
-  <form class="text-center container" [formGroup]="addTaskForm" (ngSubmit)="addTask(addTaskForm)">
-    <div class="modal-body">
-      <div class="py-3">
-        <label class="form-label fs-5" for="title">Task Title</label>
-        <input class="form-control form-control-lg" type="text" id="title" placeholder="Type Task Title" formControlName="title">
-        <div class="text-start" *ngIf="addTaskForm.get('title')?.errors && addTaskForm.get('title')?.touched">
-          <p class="text-danger fs-5" *ngIf="addTaskForm.get('title')?.getError('required')">Task Title Is Required</p>
-          <p class="text-danger fs-5" *ngIf="addTaskForm.get('title')?.getError('minlength')">Invalid Task Title</p>
-        </div>
-      </div>
-      <div class="py-3">
-        <label class="form-label fs-5" for="desc">Description</label>
-        <input class="form-control form-control-lg" type="text" id="desc" placeholder="Type Task Description" formControlName="desc">
-        <div class="text-start" *ngIf="addTaskForm.get('desc')?.errors && addTaskForm.get('Description')?.touched">
-          <p class="text-danger fs-5" *ngIf="addTaskForm.get('desc')?.getError('required')">Task desc Is Required</p>
-          <p class="text-danger fs-5" *ngIf="addTaskForm.get('desc')?.getError('minlength')">Invalid Task Description</p>
-        </div>
-      </div>
-      <div class="py-3">
-        <label class="form-label fs-5" for="due_date">Task Due Date</label>
-        <input class="form-control form-control-lg" [min]="currentDate" type="date" id="due_date" placeholder="Type Task Due Date" formControlName="due_date">
-        <div class="text-start" *ngIf="addTaskForm.get('due_date')?.errors && addTaskForm.get('due_date')?.touched">
-          <p class="text-danger fs-5" *ngIf="addTaskForm.get('due_date')?.getError('required')">Task Due Date Is Required</p>
-        </div>
-      </div>
-      <div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <input [disabled]="addTaskForm.invalid" class="btn btn-outline-primary px-5" type="submit" value="Add">
-      <button type="button" class="btn btn-outline-dark mt-1" (click)="modalRef?.hide()">close</button>
-    </div>
-  </form>
-</ng-template>
 </div>

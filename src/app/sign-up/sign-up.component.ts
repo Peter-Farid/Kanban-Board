@@ -35,6 +35,19 @@ export class SignUpComponent {
         this._router.navigate(['/signIn']);
         this._toastr.success('User Registered Successfuly! Please Sign In')
       }
+      //   next: (res) => {
+      //     if (res.status == 1 && res.statusCode == 200) {
+      //       this.isLoading = false;
+      //       localStorage.setItem("userToken", res.token);
+      //       this._authService.saveUserData();
+      //       this._router.navigate(['/home']);
+      //     }
+      //   },
+      //   error: (err) => {
+      //     this.errorMessage = err.error.message;
+      //     this.isLoading = false;
+      //   }
+      // })
     }
   }
 }

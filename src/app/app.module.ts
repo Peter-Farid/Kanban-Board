@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -18,8 +18,6 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './profile/profile.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TaskDetailsComponent } from './task-details/task-details.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +27,7 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     NotFoundComponent,
     NavbarComponent,
     BoardComponent,
-    ProfileComponent,
-    TaskDetailsComponent
+    ProfileComponent
 
 
   ],
@@ -42,11 +39,9 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ModalModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule,
-    DragDropModule
+    AngularFirestoreModule
 
   ],
   providers: [],

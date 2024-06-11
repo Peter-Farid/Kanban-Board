@@ -1,9 +1,4 @@
 import { Component } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { TasksService } from '../services/tasks.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -11,49 +6,57 @@ import { Router } from '@angular/router';
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  tasksData: any[] = [];
+  dealsData: any[] = [];
   to_do: any[] = [];
   in_progress: any[] = [];
   done: any[] = [];
-  modalRef?: BsModalRef;
-  modalTemplate: any;
-  currentDate:any;
-  constructor(private _taskService:TasksService, private _modalService:BsModalService,private _router:Router) {
-    const currentDate = new Date();
-    this.currentDate = currentDate.toISOString().split('T')[0];
-  }
+  offer_sent: any[] = [];
+  getting_ready: any[] = [];
+  currentDate: any;
+  term:string='';
+  deleteCardShow:boolean=false;
+  constructor() { }
 
   ngOnInit(): void {
     this.getData()
+    this.currentDate = new Date();
   }
 
-  getData() {
-    this.tasksData = this._taskService.tasks
-    if(this.tasksData){
-      this.filterData()
-    }
-  }
+  // getData() {
+  //   this._salesService.getDeals().subscribe({
+  //     next: (res) => {
+  //       this.dealsData = res.deals;
+  //       this.filterData()
+  //     }
+  //   })
+  // }
   filterData() {
-    this.to_do = []
-    this.in_progress = []
-    this.done = []
-    if (this.tasksData) {
-      for (let i = 0; i < this.tasksData.length; i++) {
-        if (this.tasksData[i].state == 1) {
-          this.to_do.push(this.tasksData[i])
+    if (this.dealsData) {
+      for (let i = 0; i < this.dealsData.length; i++) {
+        if (this.dealsData[i].status == 'Potential Value') {
+          this.potential_value.push(this.dealsData[i])
         }
-        else if (this.tasksData[i].state == 2) {
-          this.in_progress.push(this.tasksData[i])
+        else if (this.dealsData[i].status == 'Focus') {
+          this.focus.push(this.dealsData[i])
         }
-        else if (this.tasksData[i].state == 3) {
-          this.done.push(this.tasksData[i])
+        else if (this.dealsData[i].status == 'Contact Made') {
+          this.contact_made.push(this.dealsData[i])
+        }
+        else if (this.dealsData[i].status == 'Offer Sent') {
+          this.offer_sent.push(this.dealsData[i])
+        }
+        else if (this.dealsData[i].status == 'Getting Ready') {
+          this.getting_ready.push(this.dealsData[i])
         }
       }
     }
   }
   drop(event: CdkDragDrop<string[]>) {
+    this.term=' ';
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.hideDeleteCard();
+      this.refreshSearch();
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -61,30 +64,26 @@ export class BoardComponent {
         event.previousIndex,
         event.currentIndex,
       );
+      this.hideDeleteCard();
+      this.refreshSearch()
     }
   }
-
-  addTaskForm: FormGroup = new FormGroup({
-    title: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-    desc: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-    due_date: new FormControl(null),
-  })
-
-  addTask(formData:any){
-    this._taskService.addTask(formData.value)
-    this.getData()
-    this.modalRef?.hide()
+  refreshSearch(){
+      this.term='';
   }
-
-  deleteTask(taskId:any){
-    this._taskService.deleteTask(taskId)
-    this.getData()
+  isFutureDate(idate: any) {
+    var today = new Date().getTime(),
+      idate = idate.split("/");
+    idate = new Date(idate[2], idate[1] - 1, idate[0]).getTime();
+    return (today - idate) < 0 ? true : false;
   }
-
-  taskDetails(taskId:any){
-    this._router.navigate(['/task',taskId])
+  showDeleteCard()
+  {
+    this.deleteCardShow=true;
   }
-  openModal(template: any) {
-    this.modalRef = this._modalService.show(template, Object.assign({}, { class: 'modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable' }));
+  hideDeleteCard()
+  {
+    this.deleteCardShow=false;
+
   }
 }
