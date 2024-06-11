@@ -1,0 +1,36 @@
+/* start navbar */
+.navbar
+{
+  height: 10vh;
+  z-index: 11111;
+  background-color: white !important;
+  font-family: var(--mainFont);
+}
+.logo {
+  color: var(--mainColor);
+  cursor: pointer;
+}
+.logo img
+{
+  width: 45px;
+}
+
+.navbar .nav-item:hover
+{
+  background-color: #00000015;
+}
+.navbar .nav-item .nav-link:hover
+{
+  color: var(--mainColor) !important;
+}
+.dropdown .dropdown-item:hover
+{
+  color: var(--mainColor) !important;
+  cursor: pointer;
+}
+.navbar .nav-item .active
+{
+  color: var(--mainColor) !important;
+}
+
+/* End navbar */

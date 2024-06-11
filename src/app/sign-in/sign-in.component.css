@@ -1,0 +1,51 @@
+.loginPage {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--mainFont);
+}
+
+.logoSec {
+  padding: 2rem;
+}
+
+.loginInputs {
+  border: 2px solid var(--mainColor);
+  padding: 2rem;
+  text-align: center;
+}
+
+.loginInputs h3 {
+  font-size: 1.8rem;
+  color: var(--mainColor);
+}
+
+.loginForm input {
+  border: none;
+  border-bottom: 2px solid var(--mainColor) !important;
+}
+
+.loginForm input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.loginForm label {
+  color: var(--mainColor);
+}
+
+.loginForm button {
+  border: 2px solid var(--mainColor);
+  color: var(--mainColor);
+}
+
+.loginForm button:hover {
+  background-color: var(--mainColor);
+  color: white;
+}
+
+a{
+  color: var(--mainColor);
+  text-decoration: none;
+}

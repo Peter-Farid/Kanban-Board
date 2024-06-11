@@ -1,0 +1,132 @@
+<div class="kanbanBoard">
+  <div class="container mt-5">
+    <div class="text-end">
+      <button class="btn btn-primary" (click)="openModal(template)">Add Task</button>
+    </div>
+    <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
+      <div class="bg-light p-1 rounded " cdkDropList #toDo="cdkDropList" [cdkDropListData]="to_do"
+        [cdkDropListConnectedTo]="[inProgress,Done]" (cdkDropListDropped)="drop($event)">
+        <h5 class="fw-bolder px-2">To Do</h5>
+        <div class="mb-2 px-2">
+          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{to_do.length}}</span>
+        </div>
+        <div *ngFor="let item of to_do" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
+          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
+          <div class="card-body p-2">
+            <div class="cardHeader d-flex justify-content-between">
+              <h3 class="card-title">{{item.title}}</h3>
+              <div class="actionBtn dropdown">
+                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
+                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i
+                        class="fa-solid fa-trash-can"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <p class="lead text-muted fs-6">{{item.desc}}</p>
+            </div>
+            <div class="badges">
+              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-light p-1 rounded" cdkDropList #inProgress="cdkDropList" [cdkDropListData]="in_progress"
+        [cdkDropListConnectedTo]="[toDo,Done]" (cdkDropListDropped)="drop($event)">
+        <h5 class="fw-bolder px-2">In Progress</h5>
+        <div class="mb-2 px-2">
+          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{in_progress.length}}</span>
+        </div>
+        <div *ngFor="let item of in_progress" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
+          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
+          <div class="card-body p-2">
+            <div class="cardHeader d-flex justify-content-between">
+              <h3 class="card-title">{{item.title}}</h3>
+              <div class="actionBtn dropdown">
+                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
+                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i
+                        class="fa-solid fa-trash-can"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <p class="lead text-muted fs-6">{{item.desc}}</p>
+            </div>
+            <div class="badges">
+              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-light p-1 rounded" cdkDropList #Done="cdkDropList" [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[toDo,inProgress]" (cdkDropListDropped)="drop($event)">
+        <h5 class="fw-bolder px-2">Done</h5>
+        <div class="mb-2 px-2">
+          <span class="text-muted fw-bold"><i class="fa-solid fa-clipboard"></i> {{done.length}}</span>
+        </div>
+        <div *ngFor="let item of done" cdkDrag class="card text-bg-white mb-3 shadow-sm border-0"
+          style="max-width: 14.5rem;" (click)="taskDetails(item.id)">
+          <div class="card-body p-2">
+            <div class="cardHeader d-flex justify-content-between">
+              <h3 class="card-title">{{item.title}}</h3>
+              <div class="actionBtn dropdown">
+                <i class="fa-solid fa-ellipsis" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 bg-light">
+                  <li><a class="dropdown-item text-danger" (click)="deleteTask(item.id)"><i class="fa-solid fa-trash-can"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <p class="lead text-muted fs-6">{{item.desc}}</p>
+            </div>
+            <div class="badges">
+              <p class="p-1 badge bg-primary">{{item.due_date}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template class="modal fade" id="staticBackdrop" #template data-backdrop="static" data-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-header justify-content-center">
+    <h4 class="text-center py-2">Add Task</h4>
+  </div>
+  <form class="text-center container" [formGroup]="addTaskForm" (ngSubmit)="addTask(addTaskForm)">
+    <div class="modal-body">
+      <div class="py-3">
+        <label class="form-label fs-5" for="title">Task Title</label>
+        <input class="form-control form-control-lg" type="text" id="title" placeholder="Type Task Title" formControlName="title">
+        <div class="text-start" *ngIf="addTaskForm.get('title')?.errors && addTaskForm.get('title')?.touched">
+          <p class="text-danger fs-5" *ngIf="addTaskForm.get('title')?.getError('required')">Task Title Is Required</p>
+          <p class="text-danger fs-5" *ngIf="addTaskForm.get('title')?.getError('minlength')">Invalid Task Title</p>
+        </div>
+      </div>
+      <div class="py-3">
+        <label class="form-label fs-5" for="desc">Description</label>
+        <input class="form-control form-control-lg" type="text" id="desc" placeholder="Type Task Description" formControlName="desc">
+        <div class="text-start" *ngIf="addTaskForm.get('desc')?.errors && addTaskForm.get('Description')?.touched">
+          <p class="text-danger fs-5" *ngIf="addTaskForm.get('desc')?.getError('required')">Task desc Is Required</p>
+          <p class="text-danger fs-5" *ngIf="addTaskForm.get('desc')?.getError('minlength')">Invalid Task Description</p>
+        </div>
+      </div>
+      <div class="py-3">
+        <label class="form-label fs-5" for="due_date">Task Due Date</label>
+        <input class="form-control form-control-lg" [min]="currentDate" type="date" id="due_date" placeholder="Type Task Due Date" formControlName="due_date">
+        <div class="text-start" *ngIf="addTaskForm.get('due_date')?.errors && addTaskForm.get('due_date')?.touched">
+          <p class="text-danger fs-5" *ngIf="addTaskForm.get('due_date')?.getError('required')">Task Due Date Is Required</p>
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input [disabled]="addTaskForm.invalid" class="btn btn-outline-primary px-5" type="submit" value="Add">
+      <button type="button" class="btn btn-outline-dark mt-1" (click)="modalRef?.hide()">close</button>
+    </div>
+  </form>
+</ng-template>
+</div>

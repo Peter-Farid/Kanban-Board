@@ -1,0 +1,13 @@
+.notFoundPage{
+  height: 90vh;
+}
+p {
+  font-size: 3rem;
+  font-family: var(--mainFont);
+  color: var(--mainColor);
+}
+
+h1{
+  font-size: 3rem;
+  font-family: var(--mainFont);
+}

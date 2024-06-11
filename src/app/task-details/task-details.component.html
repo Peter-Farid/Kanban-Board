@@ -1,0 +1,22 @@
+<div class="container text-center">
+  <div class="text-center p-3 bg-info mt-2 text-white w-50 m-auto rounded-2 shadow-sm">
+    <h2>{{taskDetails.title}}</h2>
+  </div>
+  <div class="p-2 mt-2 rounded-2 shadow-sm w-50 m-auto">
+    <h4>Task Description</h4>
+    <p>{{taskDetails.desc}}</p>
+  </div>
+  <div class="p-2 mt-2 rounded-2 shadow-sm w-50 m-auto">
+    <h4>Due Task</h4>
+    <p>{{taskDetails.due_date}}</p>
+  </div>
+  <div class="p-2 mt-2 rounded-2 shadow-sm w-50 m-auto">
+    <h4>Status</h4>
+    <p *ngIf="taskDetails.state == 1" class="badge p-2 text-bg-info">To Do</p>
+    <p *ngIf="taskDetails.state == 2" class="badge p-2 text-bg-warning">In Progress</p>
+    <p *ngIf="taskDetails.state == 3" class="badge p-2 text-bg-success">Done</p>
+  </div>
+  <div class="p-2 mt-2 w-50 m-auto">
+    <a (click)="goBack()" class="btn btn-info">Back</a>
+  </div>
+</div>

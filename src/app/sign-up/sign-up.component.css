@@ -1,0 +1,51 @@
+.signUpPage {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--mainFont);
+}
+
+.logoSec {
+  padding: 2rem;
+}
+
+.signUpInputs {
+  border: 2px solid var(--mainColor);
+  padding: 2rem;
+  text-align: center;
+}
+
+.signUpInputs h3 {
+  font-size: 1.8rem;
+  color: var(--mainColor);
+}
+
+.signUpForm input {
+  border: none;
+  border-bottom: 2px solid var(--mainColor) !important;
+}
+
+.signUpForm input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.signUpForm label {
+  color: var(--mainColor);
+}
+
+.signUpForm button {
+  border: 2px solid var(--mainColor);
+  color: var(--mainColor);
+}
+
+.signUpForm button:hover {
+  background-color: var(--mainColor);
+  color: white;
+}
+
+a{
+  color: var(--mainColor);
+  text-decoration: none;
+}

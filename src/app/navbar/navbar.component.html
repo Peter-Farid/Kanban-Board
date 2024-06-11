@@ -1,0 +1,19 @@
+<nav class="navbar navbar-white bg-white shadow-sm position-fixed start-0 end-0 top-0">
+  <div class="container-fluid">
+    <div>
+      <a class="navbar-brand logo fw-bold fs-4" routerLink="/"><img src="assets/images/logo.webp"> Kanban Board</a>
+    </div>
+    <div *ngIf="isLogin" class="dropdown ms-auto text-center p-2">
+      <a href="#" class="d-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="assets/images/DefaultProfileImg.png" alt="user Image" width="40" height="40" class="rounded-circle me-2">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-sm-start text-small shadow">
+        <li><a class="dropdown-item text-capitalize" routerLink="/profile">{{userInfo.email}}</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" routerLink="/board">Board</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" (click)="logOut()" routerLink="/">Sign out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
